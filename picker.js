@@ -103,9 +103,11 @@
     return view;
   }
 
-  function fileView(label) {
+  // Google: setIncludeFolders must not be combined with setOwnedByMe, so the
+  // "Shared with me" view lists files only.
+  function fileView(label, folders) {
     var view = new google.picker.DocsView(google.picker.ViewId.DOCS)
-      .setIncludeFolders(true)
+      .setIncludeFolders(folders !== false)
       .setMimeTypes('application/json');
     if (view.setLabel) view.setLabel(label);
     return view;
@@ -120,9 +122,9 @@
         var drives = folderView(TEXT.sharedDrives).setEnableDrives(true);
         views = preferShared ? [drives, myDrive] : [myDrive, drives];
       } else {
-        var sharedWithMe = fileView(TEXT.sharedWithMe).setOwnedByMe(false);
+        var sharedWithMe = fileView(TEXT.sharedWithMe, false).setOwnedByMe(false);
         var sharedDrives = fileView(TEXT.sharedDrives).setEnableDrives(true);
-        var mine = fileView(TEXT.myDrive).setOwnedByMe(true);
+        var mine = fileView(TEXT.myDrive).setParent('root');
         views = preferShared ? [sharedDrives, sharedWithMe, mine] : [sharedWithMe, sharedDrives, mine];
       }
       var builder = new P.PickerBuilder()
