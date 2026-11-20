@@ -59,11 +59,15 @@
   }
 
   var started = false;
+  // The account connected in Drive Studio. The Picker otherwise uses the
+  // browser's first Google session, which may be another account.
+  var account = '';
   window.addEventListener('message', function (event) {
     if (event.origin !== EXTENSION_ORIGIN || event.source !== opener) return;
     var data = event.data || {};
     if (data.type !== 'drivestudio:token' || typeof data.accessToken !== 'string' || started) return;
     started = true;
+    account = typeof data.account === 'string' ? data.account : '';
     loadPicker(data.accessToken);
   });
 
@@ -135,6 +139,7 @@
         .setTitle(mode === 'folder' ? TEXT.folder : TEXT.join)
         .setSize(Math.min(window.innerWidth - 16, 1051), Math.min(window.innerHeight - 16, 650))
         .setCallback(onPicked);
+      if (account && typeof builder.setAuthUser === 'function') builder.setAuthUser(account);
       views.forEach(function (view) { builder.addView(view); });
       builder.build().setVisible(true);
     } catch (error) {
