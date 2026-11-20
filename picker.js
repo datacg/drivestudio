@@ -139,12 +139,41 @@
         .setTitle(mode === 'folder' ? TEXT.folder : TEXT.join)
         .setSize(Math.min(window.innerWidth - 16, 1051), Math.min(window.innerHeight - 16, 650))
         .setCallback(onPicked);
-      if (account && typeof builder.setAuthUser === 'function') builder.setAuthUser(account);
       views.forEach(function (view) { builder.addView(view); });
+      useAccount();
       builder.build().setVisible(true);
     } catch (error) {
       fail(error);
     }
+  }
+
+  // The Picker has no option to choose the Google account: its frame uses
+  // the browser's first signed-in account, and asks to sign in when that
+  // isn't the token's account. Google pages accept authuser=<email> to pick
+  // one of the signed-in accounts, so it is added to the frame's address
+  // as soon as the Picker creates it.
+  function useAccount() {
+    if (!account) return;
+    function fix(frame) {
+      var src = frame.getAttribute('src') || '';
+      var wanted = 'authuser=' + encodeURIComponent(account);
+      if (src.indexOf('https://docs.google.com/picker') !== 0 || src.indexOf(wanted) >= 0) return;
+      // Before any "#…" part, which the Picker uses for its own messages.
+      var hash = src.indexOf('#');
+      var base = (hash < 0 ? src : src.slice(0, hash)).replace(/([?&])authuser=[^&]*&?/, '$1').replace(/[?&]$/, '');
+      var rest = hash < 0 ? '' : src.slice(hash);
+      frame.setAttribute('src', base + (base.indexOf('?') < 0 ? '?' : '&') + wanted + rest);
+    }
+    function scan(root) {
+      if (root.tagName === 'IFRAME') fix(root);
+      if (root.querySelectorAll) Array.prototype.forEach.call(root.querySelectorAll('iframe'), fix);
+    }
+    new MutationObserver(function (changes) {
+      changes.forEach(function (change) {
+        if (change.type === 'attributes') fix(change.target);
+        Array.prototype.forEach.call(change.addedNodes, function (node) { if (node.nodeType === 1) scan(node); });
+      });
+    }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['src'] });
   }
 
   function onPicked(data) {
