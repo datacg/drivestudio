@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Drive Studio — team page invitation</title>
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<style>
+  :root { --bg: #f6f8fb; --text: #1b2430; --muted: #566273; --card: #fff; --line: #dde3ea; --accent: #0b6bcb; --accent-text: #fff; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #11161d; --text: #e6ebf1; --muted: #a2adbb; --card: #18202a; --line: #2a3441; --accent: #5aa7f0; --accent-text: #06213a; }
+  }
+  * { box-sizing: border-box; }
+  html, body { min-height: 100%; }
+  body { margin: 0; display: grid; place-items: center; min-height: 100vh; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { width: 100%; max-width: 520px; padding: 24px 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 28px 24px; text-align: center; }
+  img { width: 56px; height: 56px; }
+  h1 { font-size: 1.3rem; margin: 12px 0 6px; }
+  p { margin: 0 0 10px; color: var(--muted); }
+  ol { text-align: left; margin: 12px 0 16px; padding-left: 22px; color: var(--muted); }
+  li { margin: 4px 0; }
+  .actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+  a.button, button { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; padding: 8px 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--text); font: inherit; font-weight: 600; text-decoration: none; cursor: pointer; }
+  a.button.primary, button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <div class="card">
+    <img src="assets/logo.svg" alt="">
+    <h1 id="title">Drive Studio</h1>
+    <p id="message">…</p>
+    <ol id="steps" hidden></ol>
+    <div class="actions" id="actions"></div>
+  </div>
+</main>
+<script src="open.js"></script>
+</body>
+</html>
