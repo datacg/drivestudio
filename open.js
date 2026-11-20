@@ -1,9 +1,9 @@
-// Team page invitations for the Drive Studio extension.
+// Team pages for the Drive Studio extension.
 //
-// The invitation email sent by Drive Studio links here with the page's file
-// and the invited account (?file=…&account=…). This page hands both to the
-// extension, which asks the person whether to add the page, connecting the
-// invited account if needed. Without the extension, it asks to install it
+// Drive opens this page when someone chooses "Open with → Drive Studio" on a
+// team page file (this is the "Open URL" of the Drive UI integration in
+// Google Cloud). It hands the file to the extension, which asks the person
+// whether to add the page. Without the extension, it asks to install it
 // first and then continues.
 //
 // Only the Drive Studio extension accepts these messages, and only from this
@@ -15,9 +15,20 @@
   var EXTENSION_ID = 'jkdkipflekoipmflbpnbihfbenjplnpo';
   var INSTALL_URL = 'https://datacg.github.io/drivestudio/';
 
+  // Drive's "Open with → Drive Studio" sends ?state={"ids":[…],"action":"open",…}
+  // (Drive UI integration); older invitation links sent ?file=…&account=….
   var params = new URLSearchParams(location.search);
   var fileId = params.get('file') || '';
   var account = params.get('account') || '';
+  try {
+    var state = JSON.parse(params.get('state') || 'null');
+    if (state && state.action === 'open' && Array.isArray(state.ids) && typeof state.ids[0] === 'string') {
+      fileId = state.ids[0];
+      account = '';
+    }
+  } catch (error) {
+    // not from Drive
+  }
   var portuguese = /^pt/i.test(navigator.language || '');
 
   var TEXT = portuguese ? {
