@@ -140,6 +140,10 @@
         .setSize(Math.min(window.innerWidth - 16, 1051), Math.min(window.innerHeight - 16, 650))
         .setCallback(onPicked);
       views.forEach(function (view) { builder.addView(view); });
+      // Undocumented in the reference, but part of Google's Picker: adds
+      // authuser to the Picker's address (see useAccount below).
+      if (account && typeof builder.setAuthUser === 'function') builder.setAuthUser(account);
+      console.info('[Drive Studio] account:', account || '(none)', '· setAuthUser:', typeof builder.setAuthUser);
       useAccount();
       builder.build().setVisible(true);
     } catch (error) {
@@ -157,12 +161,17 @@
     function fix(frame) {
       var src = frame.getAttribute('src') || '';
       var wanted = 'authuser=' + encodeURIComponent(account);
-      if (src.indexOf('https://docs.google.com/picker') !== 0 || src.indexOf(wanted) >= 0) return;
+      if (src.indexOf('https://docs.google.com/picker') !== 0) return;
+      if (src.indexOf(wanted) >= 0) {
+        if (!frame.dataset.logged) { frame.dataset.logged = '1'; console.info('[Drive Studio] Picker frame already on', account); }
+        return;
+      }
       // Before any "#…" part, which the Picker uses for its own messages.
       var hash = src.indexOf('#');
       var base = (hash < 0 ? src : src.slice(0, hash)).replace(/([?&])authuser=[^&]*&?/, '$1').replace(/[?&]$/, '');
       var rest = hash < 0 ? '' : src.slice(hash);
       frame.setAttribute('src', base + (base.indexOf('?') < 0 ? '?' : '&') + wanted + rest);
+      console.info('[Drive Studio] Picker frame:', frame.getAttribute('src').replace(/(developerKey|oauth_token|token)=[^&#]*/gi, '$1=…'));
     }
     function scan(root) {
       if (root.tagName === 'IFRAME') fix(root);
