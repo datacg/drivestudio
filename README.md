@@ -10,8 +10,8 @@ Drive Studio is free. It is not yet available on the Chrome Web Store.
 
 ## Privacy
 
-Drive Studio has no server of its own. Your organization is stored in your browser and, if you turn on sync, in a hidden folder of your own Google Drive that only Drive Studio can access. Drive Studio uses only Google's non-sensitive permissions, so it cannot read the other files in your Drive.
+Drive Studio has no server of its own. Your organization is stored in your browser and, if you turn on sync, in a hidden folder of your own Google Drive that only Drive Studio can access. Drive Studio uses only Google's non-sensitive permissions, so it cannot read the other files in your Drive. Read the full [privacy policy](https://datacg.net/drivestudio-privacy/), and learn more at [datacg.net/drivestudio](https://datacg.net/drivestudio/).
 
 ## About this repository
 
-This repository holds the public website for Drive Studio, published with GitHub Pages: the privacy policy, the release notes, and the page Drive Studio uses to let you choose a shared page from Google Drive. The extension's source code is kept in a separate repository.
+This repository holds the public website for Drive Studio, published with GitHub Pages, including the page Google Drive opens when you open a team page with Drive Studio. The privacy policy is published at datacg.net, and its old address here redirects there. The extension's source code is kept in a separate repository.
