@@ -6,7 +6,7 @@ A Google Chrome extension that adds a panel to Google Drive for organizing your 
 
 Categories can have unlimited levels of subcategories. You can drag and drop files, search with filters, add tags and notes, and hide items. The organization is **virtual**: Drive Studio never moves, renames, or deletes anything in your Drive. Items are stored by their Drive ID, so they stay in place even when a file is moved or renamed.
 
-Drive Studio is free. It is not yet available on the Chrome Web Store.
+Drive Studio is free. [Get it on the Chrome Web Store](https://chromewebstore.google.com/detail/drive-studio/jkdkipflekoipmflbpnbihfbenjplnpo).
 
 ## Privacy
 
